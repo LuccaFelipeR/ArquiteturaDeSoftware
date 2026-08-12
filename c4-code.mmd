@@ -1,0 +1,25 @@
+classDiagram
+    class Emprestimo{
+    - id
+    - livro
+    - usuario
+    - dataVencimento
+    - dataRetirada
+    - dataEmprestimo
+    + Emprestimo(Livro, Usuario, DataVencimento, DataRetirada, DataEmprestimo)
+    + renew(Livro, Usuario, DataVencimento)
+    + return()
+    + isOverDue()
+}
+
+    class Notificacao{
+        <<interface>>
+        + Notify(Emprestimo)
+    }
+
+    class EmailNotificacao{
+        + Notify(Emprestimo)
+    }
+
+    Emprestimo --> Notificacao : usa
+    EmailNotificacao ..|> Notificacao : implementa
