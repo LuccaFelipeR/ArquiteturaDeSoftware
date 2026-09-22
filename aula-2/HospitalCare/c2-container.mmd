@@ -1,0 +1,13 @@
+C4Container
+title HospitalCare - Container Diagram
+
+System_Boundary(hospitalCare, "HospitalCare"){
+Container(web, "Aplicação Web", "React", "Interface para usuários")
+Container(api, "API Backend", "Java Spring", "Regras de negócio")
+Container(db, "Banco de Dados", "PostgreSQL", "Dados hospitalares")
+Container(notificacao, "Serviço de Notificação", "Email/SMS", "Comunicação")
+}
+
+Rel(web, api, "REST API")
+Rel(api, db, "Consulta dados")
+Rel(api, notificacao, "Envia mensagens")

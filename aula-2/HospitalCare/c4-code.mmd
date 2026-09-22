@@ -1,0 +1,17 @@
+class Paciente {
+    - nome: String
+    - cpf: String
+    - nascimento: Date
+
+    + cadastrar()
+    + atualizarDados()
+}
+
+class Consulta {
+    - data: Date
+    - medico: String
+
+    + agendar()
+}
+
+Paciente --> Consulta

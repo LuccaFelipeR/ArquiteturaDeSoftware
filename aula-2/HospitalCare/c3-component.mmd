@@ -1,0 +1,14 @@
+C4Component
+title HospitalCare - Component Diagram
+
+Container_Boundary(api, "API Backend"){
+Component(paciente, "Paciente Controller")
+Component(consulta, "Consulta Controller")
+Component(prontuario, "Prontuario Service")
+Component(auth, "Auth Service")
+Component(agenda, "Agenda Service")
+}
+
+Rel(paciente, prontuario, "Gerencia dados")
+Rel(consulta, agenda, "Controla horários")
+Rel(auth, paciente, "Autenticação")
