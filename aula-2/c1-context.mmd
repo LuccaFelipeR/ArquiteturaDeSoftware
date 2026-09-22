@@ -1,0 +1,17 @@
+C4Context
+title HospitalCare - Contexto do Sistema
+
+Person(paciente, "Paciente", "Pessoa que utiliza os serviços do hospital")
+Person(medico, "Médico", "Profissional responsável pelo atendimento")
+Person(secretaria, "Secretária", "Realiza cadastros e agendamentos")
+
+System(hospital, "HospitalCare", "Sistema de gerenciamento hospitalar")
+
+System_Ext(laboratorio, "Laboratório", "Sistema externo de exames")
+System_Ext(notificacao, "Serviço de mensagens", "Envio de avisos")
+
+Rel(paciente, hospital, "Agenda consultas")
+Rel(medico, hospital, "Consulta informações")
+Rel(secretaria, hospital, "Administra dados")
+Rel(hospital, laboratorio, "Solicita exames")
+Rel(hospital, notificacao, "Envia notificações")

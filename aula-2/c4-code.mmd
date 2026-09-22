@@ -1,0 +1,17 @@
+class Paciente {
+ - id: Long
+ - nome: String
+ - cpf: String
+
+ + cadastrar()
+ + atualizar()
+}
+
+class Consulta {
+ - data: LocalDate
+ - horario: String
+
+ + agendar()
+}
+
+Paciente --> Consulta

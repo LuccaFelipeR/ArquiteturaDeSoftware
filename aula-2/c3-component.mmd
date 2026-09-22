@@ -1,0 +1,12 @@
+C4Component
+title HospitalCare - Componentes
+
+Container_Boundary(api, "Backend"){
+Component(pacienteController, "Paciente Controller")
+Component(consultaController, "Consulta Controller")
+Component(service, "Consulta Service")
+Component(repository, "Paciente Repository")
+}
+
+Rel(pacienteController, service, "Executa regras")
+Rel(service, repository, "Acessa dados")
