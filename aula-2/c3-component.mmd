@@ -1,12 +1,14 @@
+
 C4Component
 title HospitalCare - Componentes
 
-Container_Boundary(api, "Backend"){
-Component(pacienteController, "Paciente Controller")
-Component(consultaController, "Consulta Controller")
-Component(service, "Consulta Service")
-Component(repository, "Paciente Repository")
+Container_Boundary(api, "Backend") {
+    Component(controller, "PacienteController", "Spring MVC")
+    Component(service, "PacienteService", "Spring Service")
+    Component(model, "Paciente", "Java")
 }
 
-Rel(pacienteController, service, "Executa regras")
-Rel(service, repository, "Acessa dados")
+Rel(controller, service, "Chama")
+Rel(service, model, "Utiliza")
+
+UpdateLayoutConfig($c4ShapeInRow="1", $c4BoundaryInRow="1")
