@@ -1,10 +1,11 @@
-# Pipes e Filtros
+# Arquitetura Pipes e Filtros
 
-O processamento de dados pode passar por etapas independentes.
+A arquitetura Pipes e Filtros funciona dividindo o processamento em etapas, onde cada uma tem uma função e passa o resultado para a próxima.
 
-Exemplo:
-Cadastro de consulta:
+No HospitalCare, podemos usar como exemplo o agendamento de uma consulta. Primeiro o sistema recebe os dados, depois verifica se estão corretos, processa o agendamento e por último salva as informações.
 
-Entrada -> Validação -> Processamento -> Persistência
+O fluxo seria:
 
-Cada etapa possui uma responsabilidade específica.
+Entrada → Validação → Processamento → Persistência
+
+A vantagem dessa arquitetura é que cada etapa pode ser tratada separadamente. Assim, se precisar mudar alguma validação, por exemplo, não seria necessário alterar todo o processamento.
