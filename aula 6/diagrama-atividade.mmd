@@ -1,0 +1,7 @@
+flowchart TD
+    Inicio(( )) --> A[Recebe dados do paciente]
+    A --> B{Dados validos?}
+    B -->|Sim| C[Cadastra paciente]
+    B -->|Nao| D[Retorna erro]
+    C --> Fim(( ))
+    D --> Fim
