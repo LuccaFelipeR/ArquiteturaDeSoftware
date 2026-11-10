@@ -2,7 +2,6 @@ package br.com.mvc.controller;
 
 import br.com.mvc.service.ProdutoService;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
