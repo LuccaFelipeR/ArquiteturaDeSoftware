@@ -1,0 +1,19 @@
+
+flowchart TD
+    A([Inicio]) --> B[Solicitar saida]
+    B --> C{Produto descontinuado?}
+
+    C -->|Sim| D[Bloquear saida]
+    C -->|Nao| E{Quantidade valida e saldo suficiente?}
+
+    E -->|Nao| F[Informar erro]
+    E -->|Sim| G[Atualizar estoque]
+
+    G --> H{Estoque zerou?}
+    H -->|Sim| I[Status INDISPONIVEL]
+    H -->|Nao| J[Status DISPONIVEL]
+
+    D --> K([Fim])
+    F --> K
+    I --> K
+    J --> K

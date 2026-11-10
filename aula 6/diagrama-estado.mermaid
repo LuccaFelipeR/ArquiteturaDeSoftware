@@ -1,0 +1,13 @@
+
+stateDiagram-v2
+    [*] --> INDISPONIVEL: Cadastrar
+
+    INDISPONIVEL --> DISPONIVEL: Entrada de estoque
+    DISPONIVEL --> INDISPONIVEL: Estoque zerado
+
+    DISPONIVEL --> DISPONIVEL: Movimentacao com saldo positivo
+
+    INDISPONIVEL --> DESCONTINUADO: Descontinuar [ADM]
+    DISPONIVEL --> DESCONTINUADO: Descontinuar [ADM]
+
+    DESCONTINUADO --> [*]

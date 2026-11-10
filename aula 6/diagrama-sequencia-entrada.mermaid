@@ -1,0 +1,17 @@
+
+sequenceDiagram
+    actor Usuario
+    participant Controller
+    participant Service
+    participant Repository
+
+    Usuario->>Controller: Registrar entrada
+    Controller->>Service: entrada(id, quantidade)
+    Service->>Repository: Buscar produto
+    Repository-->>Service: Produto
+
+    Service->>Service: Validar status e quantidade
+    Service->>Repository: Salvar novo estoque
+    Repository-->>Service: Produto atualizado
+    Service-->>Controller: Entrada realizada
+    Controller-->>Usuario: Exibir resultado
