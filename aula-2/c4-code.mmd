@@ -1,0 +1,16 @@
+classDiagram
+    class Paciente {
+        -Long id
+        -String nome
+        -String cpf
+        +cadastrar()
+        +atualizar()
+    }
+
+    class Consulta {
+        -LocalDate data
+        -String horario
+        +agendar()
+    }
+
+    Paciente --> Consulta

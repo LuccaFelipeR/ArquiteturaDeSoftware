@@ -1,0 +1,11 @@
+C4Container
+title HospitalCare - Containers
+
+System_Boundary(hospital, "HospitalCare"){
+Container(frontend, "Aplicação Web", "HTML/CSS/JavaScript", "Interface do usuário")
+Container(api, "API Backend", "Spring Boot", "Regras de negócio")
+Container(database, "Banco de Dados", "PostgreSQL", "Persistência")
+}
+
+Rel(frontend, api, "Requisições HTTP")
+Rel(api, database, "Consulta e grava dados")
