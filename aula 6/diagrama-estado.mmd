@@ -1,8 +1,0 @@
-stateDiagram-v2
-    [*] --> AGENDADA
-    AGENDADA --> CONFIRMADA: confirmar()
-    CONFIRMADA --> REALIZADA: atender()
-    AGENDADA --> CANCELADA: cancelar()
-    CONFIRMADA --> CANCELADA: cancelar()
-    REALIZADA --> [*]
-    CANCELADA --> [*]
