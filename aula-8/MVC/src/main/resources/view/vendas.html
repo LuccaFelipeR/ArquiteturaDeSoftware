@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 8 | Sistema de Vendas</title>
+    <style>
+        :root { --blue:#2056d6; --navy:#172842; --bg:#f2f5fb; --line:#e2e8f1; --text:#25354a; }
+        * { box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); margin:0; font-family:Arial,Helvetica,sans-serif; }
+        .top { background:var(--navy); color:white; padding:22px 0; }
+        .wrap { max-width:1120px; margin:auto; padding:0 20px; }
+        .topline { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+        h1 { margin:0 0 6px; font-size:27px; }
+        .top p { margin:0; color:#d5deec; font-size:14px; }
+        .navlink { padding:10px 14px; border:1px solid #8192ab; border-radius:7px; color:white; text-decoration:none; white-space:nowrap; }
+        main { padding-top:28px!important; padding-bottom:55px!important; }
+        .hint { font-size:13px; color:#586a80; margin-bottom:20px; }
+        .grid { display:grid; grid-template-columns:340px 1fr; gap:20px; align-items:start; }
+        .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:22px; box-shadow:0 2px 8px #17284208; }
+        h2 { font-size:18px; margin:0 0 19px; }
+        label { font-weight:bold; font-size:13px; display:block; margin-bottom:7px; }
+        input { width:100%; padding:12px; border-radius:7px; border:1px solid #cdd7e3; font-size:14px; }
+        input:focus { border-color:var(--blue); outline:2px solid #2056d61c; }
+        .field { margin-bottom:17px; }
+        button { background:var(--blue); border:0; border-radius:7px; padding:11px 15px; color:#fff; font-weight:bold; cursor:pointer; }
+        button:hover { filter:brightness(.92); }
+        .primary { width:100%; }
+        .small { padding:9px 11px; font-size:12px; white-space:nowrap; }
+        .notice { padding:13px 15px; border-radius:8px; margin:0 0 17px; font-size:14px; }
+        .success { background:#e9f8f0; color:#176940; }
+        .error { background:#fff0ef; color:#a2322e; }
+        .tablewrap { overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; font-size:13px; }
+        th { background:#f5f7fb; font-size:12px; color:#5b6c82; text-transform:uppercase; letter-spacing:.35px; }
+        th, td { border-bottom:1px solid var(--line); padding:13px 9px; text-align:left; }
+        td { vertical-align:middle; }
+        .muted { color:#697c92; font-size:12px; }
+        .code { color:var(--blue); font-weight:bold; }
+        .pill { border-radius:20px; padding:5px 8px; display:inline-block; font-size:11px; font-weight:bold; white-space:nowrap; }
+        .open { background:#ecf2fc; color:#2d63b3; }
+        .ok { background:#e5f6e9; color:#1c7040; }
+        .fail { background:#fff1e7; color:#ac5b17; }
+        .empty { color:#607389; padding:16px 0 3px; }
+        .footer { color:#7c8b9d; font-size:12px; margin-top:18px; }
+        .fatura { font-weight:bold; color:#136f49; }
+        @media (max-width:850px) { .grid {grid-template-columns:1fr;} .topline {align-items:start;} h1 {font-size:23px;} }
+        @media (max-width:520px) { .topline {flex-direction:column;} }
+    </style>
+</head>
+<body>
+<header class="top">
+    <div class="wrap topline">
+        <div>
+            <h1>Sistema de Vendas</h1>
+            <p>Aula 8 — MVC integrado ao hub de faturamento da Aula 7</p>
+        </div>
+        <a class="navlink" th:href="@{/produtos}">Ver estoque (Aula 6)</a>
+    </div>
+</header>
+<main class="wrap">
+    <p class="hint">Cadastre um pedido e clique em <strong>Fechar pedido</strong>. O MVC chama o hub na porta 8081 e salva o ID da fatura recebida.</p>
+    <p th:if="${mensagem}" th:text="${mensagem}" class="notice success"></p>
+    <p th:if="${erro}" th:text="${erro}" class="notice error"></p>
+    <div class="grid">
+        <section class="card">
+            <h2>Nova venda</h2>
+            <form th:action="@{/vendas/cadastrar}" method="post">
+                <div class="field">
+                    <label for="descricao">Produto / descrição</label>
+                    <input id="descricao" name="descricao" placeholder="Ex.: Notebook" maxlength="120" required>
+                </div>
+                <div class="field">
+                    <label for="clienteEmail">E-mail do cliente</label>
+                    <input id="clienteEmail" name="clienteEmail" type="email" placeholder="cliente@exemplo.com" required>
+                </div>
+                <div class="field">
+                    <label for="valor">Valor da venda (R$)</label>
+                    <input id="valor" name="valor" type="number" step="0.01" min="0.01" placeholder="150.00" required>
+                </div>
+                <button class="primary" type="submit">Cadastrar pedido</button>
+            </form>
+            <p class="footer">A movimentação de estoque continua disponível na tela da Aula 6. Não há baixa automática nesta atividade.</p>
+        </section>
+        <section class="card">
+            <h2>Pedidos cadastrados</h2>
+            <div th:if="${#lists.isEmpty(pedidos)}" class="empty">Nenhum pedido cadastrado ainda.</div>
+            <div class="tablewrap" th:unless="${#lists.isEmpty(pedidos)}">
+                <table>
+                    <thead><tr>
+                        <th>Pedido</th><th>Descrição / cliente</th><th>Valor</th><th>Status</th><th>Fatura</th><th>Ação</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr th:each="pedido : ${pedidos}">
+                            <td class="code" th:text="${pedido.codigoPedido}">PED-1</td>
+                            <td>
+                                <div th:text="${pedido.descricao}">Produto</div>
+                                <div class="muted" th:text="${pedido.clienteEmail}">email</div>
+                            </td>
+                            <td th:text="${#numbers.formatDecimal(pedido.valor, 1, 'POINT', 2, 'COMMA')}">150,00</td>
+                            <td>
+                                <span th:if="${pedido.status.name() == 'ABERTO'}" class="pill open">Aberto</span>
+                                <span th:if="${pedido.status.name() == 'FATURADO'}" class="pill ok">Faturado</span>
+                                <span th:if="${pedido.status.name() == 'ERRO_FATURAMENTO'}" class="pill fail" title="Confira se o hub da Aula 7 está ligado">Falha no hub</span>
+                            </td>
+                            <td>
+                                <span th:if="${pedido.faturaId != null}" class="fatura" th:text="${'#' + pedido.faturaId}">#1</span>
+                                <span th:if="${pedido.faturaId == null}" class="muted">—</span>
+                            </td>
+                            <td>
+                                <form th:if="${pedido.status.name() != 'FATURADO'}"
+                                      th:action="@{/vendas/{id}/fechar(id=${pedido.id})}" method="post">
+                                    <button class="small" type="submit"
+                                            th:text="${pedido.status.name() == 'ERRO_FATURAMENTO' ? 'Tentar novamente' : 'Fechar pedido'}">Fechar pedido</button>
+                                </form>
+                                <span th:if="${pedido.status.name() == 'FATURADO'}" class="muted">Concluído</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>
